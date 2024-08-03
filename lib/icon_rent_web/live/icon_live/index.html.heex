@@ -1,0 +1,45 @@
+<.header>
+  Listing Icons
+  <:actions>
+    <.link patch={~p"/icons/new"}>
+      <.button>New Icon</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.table
+  id="icons"
+  rows={@streams.icons}
+  row_click={fn {_id, icon} -> JS.navigate(~p"/icons/#{icon}") end}
+>
+  <:col :let={{_id, icon}} label="Name"><%= icon.name %></:col>
+  <:col :let={{_id, icon}} label="Description"><%= icon.description %></:col>
+  <:col :let={{_id, icon}} label="Verification level"><%= icon.verification_level %></:col>
+  <:col :let={{_id, icon}} label="Address"><%= icon.address %></:col>
+  <:col :let={{_id, icon}} label="Nullifier hash"><%= icon.nullifier_hash %></:col>
+  <:action :let={{_id, icon}}>
+    <div class="sr-only">
+      <.link navigate={~p"/icons/#{icon}"}>Show</.link>
+    </div>
+    <.link patch={~p"/icons/#{icon}/edit"}>Edit</.link>
+  </:action>
+  <:action :let={{id, icon}}>
+    <.link
+      phx-click={JS.push("delete", value: %{id: icon.id}) |> hide("##{id}")}
+      data-confirm="Are you sure?"
+    >
+      Delete
+    </.link>
+  </:action>
+</.table>
+
+<.modal :if={@live_action in [:new, :edit]} id="icon-modal" show on_cancel={JS.patch(~p"/icons")}>
+  <.live_component
+    module={IconRentWeb.IconLive.FormComponent}
+    id={@icon.id || :new}
+    title={@page_title}
+    action={@live_action}
+    icon={@icon}
+    patch={~p"/icons"}
+  />
+</.modal>

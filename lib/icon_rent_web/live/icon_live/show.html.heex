@@ -1,0 +1,30 @@
+<.header>
+  Icon <%= @icon.id %>
+  <:subtitle>This is a icon record from your database.</:subtitle>
+  <:actions>
+    <.link patch={~p"/icons/#{@icon}/show/edit"} phx-click={JS.push_focus()}>
+      <.button>Edit icon</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.list>
+  <:item title="Name"><%= @icon.name %></:item>
+  <:item title="Description"><%= @icon.description %></:item>
+  <:item title="Verification level"><%= @icon.verification_level %></:item>
+  <:item title="Address"><%= @icon.address %></:item>
+  <:item title="Nullifier hash"><%= @icon.nullifier_hash %></:item>
+</.list>
+
+<.back navigate={~p"/icons"}>Back to icons</.back>
+
+<.modal :if={@live_action == :edit} id="icon-modal" show on_cancel={JS.patch(~p"/icons/#{@icon}")}>
+  <.live_component
+    module={IconRentWeb.IconLive.FormComponent}
+    id={@icon.id}
+    title={@page_title}
+    action={@live_action}
+    icon={@icon}
+    patch={~p"/icons/#{@icon}"}
+  />
+</.modal>

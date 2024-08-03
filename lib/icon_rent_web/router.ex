@@ -18,6 +18,13 @@ defmodule IconRentWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :home
+
+    live "/icons", IconLive.Index, :index
+    live "/icons/new", IconLive.Index, :new
+    live "/icons/:id/edit", IconLive.Index, :edit
+
+    live "/icons/:id", IconLive.Show, :show
+    live "/icons/:id/show/edit", IconLive.Show, :edit
   end
 
   # Other scopes may use custom stacks.
